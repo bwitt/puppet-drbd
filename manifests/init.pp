@@ -16,14 +16,17 @@
 #  array of common options for /etc/drbd.d/global_common.conf
 # @param common_suboptions
 #  hash of suboptions for /etc/drbd.d/global_common.conf
+# @param load_kernel_module
+#  if the drbd kernel module should be loaded
 #
 class drbd (
-  Boolean                                 $service_enable    = true,
-  Enum['running', 'stopped', 'unmanaged'] $service_ensure    = running,
-  String                                  $package_name      = 'drbd8-utils',
-  Array[String[1]]                        $global_options    = ['usage-count no'],
-  Array[String[1]]                        $common_options    = ['protocol C'],
-  Drbd::Common_suboptions                 $common_suboptions = {},
+  Boolean                                 $service_enable     = true,
+  Enum['running', 'stopped', 'unmanaged'] $service_ensure     = running,
+  String                                  $package_name       = 'drbd8-utils',
+  Array[String[1]]                        $global_options     = ['usage-count no'],
+  Array[String[1]]                        $common_options     = ['protocol C'],
+  Drbd::Common_suboptions                 $common_suboptions  = {},
+  Boolean                                 $load_kernel_module = true,
 ) {
   include drbd::service
 
@@ -32,10 +35,12 @@ class drbd (
     name   => $package_name,
   }
 
-  # ensure that the kernel module is loaded
-  exec { 'modprobe drbd':
-    path   => ['/bin/', '/sbin/'],
-    unless => 'grep -qe \'^drbd \' /proc/modules',
+  if $load_kernel_module {
+    # ensure that the kernel module is loaded
+    exec { 'modprobe drbd':
+      path   => ['/bin/', '/sbin/'],
+      unless => 'grep -qe \'^drbd \' /proc/modules',
+    }
   }
 
   File {

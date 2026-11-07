@@ -39,6 +39,7 @@ The following parameters are available in the `drbd` class:
 * [`global_options`](#-drbd--global_options)
 * [`common_options`](#-drbd--common_options)
 * [`common_suboptions`](#-drbd--common_suboptions)
+* [`load_kernel_module`](#-drbd--load_kernel_module)
 
 ##### <a name="-drbd--service_enable"></a>`service_enable`
 
@@ -87,6 +88,14 @@ Data type: `Drbd::Common_suboptions`
 hash of suboptions for /etc/drbd.d/global_common.conf
 
 Default value: `{}`
+
+##### <a name="-drbd--load_kernel_module"></a>`load_kernel_module`
+
+Data type: `Boolean`
+
+if the drbd kernel module should be loaded
+
+Default value: `true`
 
 ### <a name="drbd--service"></a>`drbd::service`
 

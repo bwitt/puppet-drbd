@@ -34,7 +34,7 @@ define drbd::resource::up (
         Service['drbd'],
       ],
       require => [
-        Exec['modprobe drbd'],
+        Class['drbd'],
         Concat["/etc/drbd.d/${name}.res"],
       ],
       notify  => Service['drbd'],
@@ -46,7 +46,7 @@ define drbd::resource::up (
       command => "drbdadm up ${name}",
       onlyif  => "drbdadm dstate ${name} | egrep -q '^(Diskless/|Unconfigured|Consistent)'",
       before  => Service['drbd'],
-      require => Exec['modprobe drbd'],
+      require => Class['drbd'],
       notify  => Service['drbd'],
     }
   }

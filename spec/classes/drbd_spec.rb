@@ -31,6 +31,13 @@ describe 'drbd', type: :class do
           is_expected.to contain_package('drbd').with_name('drbd8-utils')
         end
       end
+
+      context 'with load_kernel_module => false' do
+        let(:params) { { load_kernel_module: false } }
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.not_to contain_exec('modprobe drbd') }
+      end
     end
   end
 end
